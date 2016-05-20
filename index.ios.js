@@ -9,10 +9,11 @@ import {
 } from 'react-native';
 
 var SpellBook = React.createClass({
-    
+
     getInitialState: function(){
-        return { 
-            slots: Array(12).fill(false)
+        return {
+            slots: Array(12).fill(false),
+            spell: "Dungeon"
         }
     },
 
@@ -36,7 +37,7 @@ var SpellBook = React.createClass({
                 </TouchableHighlight>
             )
         });
-        
+
         const slotRow3 = this.state.slots.slice(8, 12).map( ( slot, i ) => {
             const j = i + 8;
             const style = this.state.slots[j] ? styles.buttonOn : styles.buttonOff;
@@ -56,7 +57,7 @@ var SpellBook = React.createClass({
                 </View>
                 <View style={styles.body}>
                     <Text style={styles.footText}>
-                        Dungeon
+                        {this.state.spell}
                     </Text>
                 </View>
                 <View style={styles.slot}>
@@ -89,7 +90,7 @@ var SpellBook = React.createClass({
         let newslots = this.state.slots.slice(0, this.state.slots.length );
         newslots[slot] = !this.state.slots[slot];
 
-        this.setState({ slots: newslots });        
+        this.setState({ slots: newslots });
     },
 
     commitClear: function(){
@@ -98,6 +99,11 @@ var SpellBook = React.createClass({
 
     commitCast: function(){
         //pushes each cells # to a string..
+        let spellString = "";
+        this.state.slots.forEach( ( n ) => {
+            spellString += n ? '1' : '0';
+        });
+        this.setState({spell: spellString})
         this.commitClear()
     }
 });
@@ -149,9 +155,9 @@ var styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: 'gray'
-        // borderWidth: 1,
-        // borderColor: 'black'
+        backgroundColor: 'gray',
+        borderWidth: 1,
+        borderColor: 'black'
 
     },
     body: {
@@ -159,9 +165,9 @@ var styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'gray'
-        // borderWidth: 2,
-        // borderColor: 'yellow'
+        backgroundColor: 'gray',
+        borderWidth: 2,
+        borderColor: 'yellow'
     },
     button: {
         backgroundColor: 'orange',
@@ -193,14 +199,6 @@ var styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderColor: 'blue'
-    },
-    actRed: {
-        borderWidth: 2,
-        borderColor: 'red'
-    },
-    actGreen: {
-        borderWidth: 2,
-        borderColor: 'green'
     }
 })
 

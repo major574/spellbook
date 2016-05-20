@@ -100,9 +100,19 @@ var SpellBook = React.createClass({
     commitCast: function(){
         //pushes each cells # to a string..
         let spellString = "";
+        // i 0-1 = heal, 2-3 = fireball
+        const spellChart = {
+            '010010100100': 'Heal',
+            '001001010010': 'Heal',
+            '001001001000': 'Fireball',
+            '000100100100': 'Fireball',
+        };
         this.state.slots.forEach( ( n ) => {
             spellString += n ? '1' : '0';
         });
+        //bang bang you're a boolean
+        spellString = !!spellChart[spellString] ? spellChart[spellString] : spellString
+
         this.setState({spell: spellString})
         this.commitClear()
     }
@@ -156,8 +166,8 @@ var styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         backgroundColor: 'gray',
-        borderWidth: 1,
-        borderColor: 'black'
+        // borderWidth: 1,
+        // borderColor: 'black'
 
     },
     body: {
@@ -166,8 +176,8 @@ var styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'gray',
-        borderWidth: 2,
-        borderColor: 'yellow'
+        // borderWidth: 2,
+        // borderColor: 'yellow'
     },
     button: {
         backgroundColor: 'orange',

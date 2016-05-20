@@ -1,11 +1,12 @@
-var React = require('react-native');
-var {
+import React, { Component } from 'react';
+
+import {
     Text,
     View,
     TouchableHighlight,
     AppRegistry,
     StyleSheet
-} = React;
+} from 'react-native';
 
 var SpellBook = React.createClass({
     getInitialState: function(){

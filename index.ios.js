@@ -5,60 +5,79 @@ import {
     View,
     TouchableHighlight,
     AppRegistry,
-    StyleSheet
+    StyleSheet,
 } from 'react-native';
+
+//To do: Make each activated stone a different color, and to deactivate a stone if another one is clicked.
+//       Make each slot coorespond to the current activated stone.
+//       Add persistence layer and create a player class with health etc..
+
+var Slot = React.createClass({
+    render: function() {
+        const style = this.props.slotState ? styles.buttonOn : styles.buttonOff;
+        return (
+            <TouchableHighlight underlayColor="gray" onPress={ () => {this.props.handleActivation(this.props.slotIndex)} }  style={ style }>
+                <Text> { this.props.slotState ? 'On' : 'Off'} </Text>
+            </TouchableHighlight>
+        )
+    }
+});
+var Stone = React.createClass({
+    render: function() {
+        const style = this.props.stoneState ? styles.stoneOn : styles.stoneOff;
+        return (
+            <TouchableHighlight underlayColor="green" onPress={ ()=> this.props.handleStone(this.props.slotIndex) } style={ style }>
+                <Text> { this.props.stoneState ? 'On' : 'Off'} </Text>
+            </TouchableHighlight>
+        )
+    }
+})
 
 var SpellBook = React.createClass({
 
     getInitialState: function(){
         return {
             slots: Array(12).fill(false),
-            spell: "Dungeon"
+            spell: "",
+            stones: Array(4).fill(false)
         }
     },
 
     render: function() {
+        const stoneRow = this.state.stones.slice(0, 4).map( (stone, i ) =>{
+            return <Stone slotIndex={i} stoneState={ stone } key={i} handleStone={ this.handleStone } />
+        } )
 
         const slotRow1 = this.state.slots.slice(0, 4).map( ( slot, i ) => {
-            const style = this.state.slots[i] ? styles.buttonOn : styles.buttonOff;
-            return (
-                <TouchableHighlight key={ i } underlayColor="gray" onPress={ () => { this.handleActivation( i ) } }  style={ style }>
-                    <Text> {this.state.slots[slot] ? 'On' : 'Off'} </Text>
-                </TouchableHighlight>
-            )
+            return <Slot slotIndex={i} slotState={ slot } key={i} handleActivation={ this.handleActivation } />
         });
 
         const slotRow2 = this.state.slots.slice(4, 8).map( ( slot, i ) => {
-            const j = i + 4;
-            const style = this.state.slots[j] ? styles.buttonOn : styles.buttonOff;
-            return (
-                <TouchableHighlight key={ j } underlayColor="gray" onPress={ () => { this.handleActivation( j ) } }  style={ style }>
-                    <Text> {this.state.slots[slot] ? 'On' : 'Off'} </Text>
-                </TouchableHighlight>
-            )
+            return <Slot slotIndex={i + 4} slotState={ slot } key={i} handleActivation={ this.handleActivation } />
         });
 
         const slotRow3 = this.state.slots.slice(8, 12).map( ( slot, i ) => {
-            const j = i + 8;
-            const style = this.state.slots[j] ? styles.buttonOn : styles.buttonOff;
-            return (
-                <TouchableHighlight key={ j } underlayColor="gray" onPress={ () => { this.handleActivation( j ) } }  style={ style }>
-                    <Text> {this.state.slots[slot] ? 'On' : 'Off'} </Text>
-                </TouchableHighlight>
-            )
+            return <Slot slotIndex={i + 8} slotState={ slot } key={i} handleActivation={ this.handleActivation } />
         });
 
         return (
             <View style={styles.container}>
+                <View style={styles.headHalf}>
+                </View>
                 <View style={styles.header}>
                     <Text style={styles.headText}>
                         Spell Book
                     </Text>
                 </View>
                 <View style={styles.body}>
-                    <Text style={styles.footText}>
+                    <Text style={styles.bodyText}>
                         {this.state.spell}
                     </Text>
+                </View>
+                <View style={styles.slot}>
+                    <View style={styles.slot}>
+                        {stoneRow}
+                    </View>
                 </View>
                 <View style={styles.slot}>
                     <View style={styles.slot}>{ slotRow1 }</View>
@@ -69,8 +88,8 @@ var SpellBook = React.createClass({
                 <View style={styles.slot}>
                     <View style={styles.slot}>{ slotRow3 }</View>
                 </View>
-                <View style={styles.manaBar}>
-                    <Text style={styles.footText}>Mana Bar</Text>
+                <View style={styles.healthBar}>
+                    <Text style={styles.footText}>Health</Text>
                 </View>
                 <View style={styles.footer}>
                     <View style={styles.footer}>
@@ -81,6 +100,8 @@ var SpellBook = React.createClass({
                             <Text>Cast</Text>
                         </TouchableHighlight>
                     </View>
+                </View>
+                <View style={styles.headHalf}>
                 </View>
             </View>
         )
@@ -93,8 +114,25 @@ var SpellBook = React.createClass({
         this.setState({ slots: newslots });
     },
 
-    commitClear: function(){
+    handleStone: function(stone){
+        let newstones = this.state.stones.slice(0, this.state.stones.length );
+
+        newstones[stone] = !this.state.stones[stone];
+
+        this.setState({ stones: newstones });
+    },
+
+    slotClear: function(){
         this.setState({ slots: Array(12).fill(false) });
+    },
+
+    commitClear: function(){
+        this.slotClear();
+        this.stoneClear();
+    },
+
+    stoneClear: function(){
+        this.setState({ stones: Array(4).fill(false) });
     },
 
     commitCast: function(){
@@ -102,10 +140,30 @@ var SpellBook = React.createClass({
         let spellString = "";
         // i 0-1 = heal, 2-3 = fireball
         const spellChart = {
-            '010010100100': 'Heal',
-            '001001010010': 'Heal',
-            '001001001000': 'Fireball',
-            '000100100100': 'Fireball',
+
+            '010010100100': 'Heal I',
+            '001001010010': 'Heal I',
+            '010011100100': 'Heal II',
+            '001001110010': 'Heal II',
+            '001001001000': 'Fireball I',
+            '000100100100': 'Fireball I',
+            '011001101000': 'Fireball II',
+            '001100110100': 'Fireball II',
+            '101001001010': 'Ice Storm I',
+            '010100100101': 'Ice Storm I',
+            '111001001110': 'Ice Storm II',
+            '011100100111': 'Ice Storm II',
+            '100001001000': 'Lightning Bolt I',
+            '010000100100': 'Lightning Bolt I',
+            '001000010010': 'Lightning Bolt I',
+            '100001001110': 'Lightning Bolt II',
+            '010000100111': 'Lightning Bolt II',
+            '100001100100': 'Acid Burn I',
+            '010000110010': 'Acid Burn I',
+            '110011100100': 'Acid Burn II',
+            '011001110010': 'Acid Burn II',
+
+
         };
         this.state.slots.forEach( ( n ) => {
             spellString += n ? '1' : '0';
@@ -114,27 +172,33 @@ var SpellBook = React.createClass({
         spellString = !!spellChart[spellString] ? spellChart[spellString] : spellString
 
         this.setState({spell: spellString})
-        this.commitClear()
+        this.slotClear()
     }
 });
+
+
 
 var styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'stretch'
     },
-    header: {
+    headHalf: {
         flex: 1,
+    },
+    header: {
+        flex: 2,
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-around',
         alignItems: 'center',
         borderWidth: 2,
-        borderColor: 'orange'
+        backgroundColor: '#E8C46F',
+        // borderColor: 'orange'
 
     },
     footer: {
-        flex: 1,
+        flex: 2,
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-around',
@@ -142,25 +206,29 @@ var styles = StyleSheet.create({
         // borderWidth: 2,
         // borderColor: 'blue'
     },
-    manaBar: {
+    healthBar: {
         flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-around',
         alignItems: 'center',
         borderWidth: 2,
-        borderColor: 'blue',
-        backgroundColor: 'purple'
+        borderColor: '#A11624',
+        backgroundColor: '#FF3347'
     },
     headText: {
         fontSize: 30
     },
     footText: {
-        fontSize: 20,
+        fontSize: 15,
+        color: 'white'
+    },
+    bodyText: {
+        fontSize: 40,
         color: 'white'
     },
     slot: {
-        flex: 1,
+        flex: 2,
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
@@ -171,7 +239,7 @@ var styles = StyleSheet.create({
 
     },
     body: {
-        flex: 7,
+        flex: 12,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -180,7 +248,7 @@ var styles = StyleSheet.create({
         // borderColor: 'yellow'
     },
     button: {
-        backgroundColor: 'orange',
+        backgroundColor: '#E8C46F',
         flexDirection: 'row',
         borderWidth: 2,
         height: 40,
@@ -191,24 +259,45 @@ var styles = StyleSheet.create({
         borderColor: 'black'
     },
     buttonOff: {
-        backgroundColor: 'yellow',
-        borderWidth: 2,
-        height: 60,
-        width: 60,
+        backgroundColor: '#E8C46F',
+        borderWidth: 1,
+        height: 50,
+        width: 50,
         flexWrap: 'wrap',
         justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#A88940'
+    },
+    buttonOn: {
+        backgroundColor: '#FF3347',
+        borderWidth: 1,
+        height: 50,
+        width: 50,
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#A11624'
+    },
+    stoneOff: {
+        backgroundColor: '#5C5B5A',
+        borderWidth: 1,
+        height: 40,
+        width: 40,
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
         alignItems: 'center',
         borderColor: 'black'
     },
-    buttonOn: {
-        backgroundColor: 'teal',
-        borderWidth: 2,
-        height: 60,
-        width: 60,
+    stoneOn: {
+        backgroundColor: 'white',
+        borderWidth: 1,
+        height: 40,
+        width: 40,
         flexWrap: 'wrap',
-        justifyContent: 'center',
+        justifyContent: 'space-around',
         alignItems: 'center',
-        borderColor: 'blue'
+        borderColor: '#5C5B5A'
+
     }
 })
 

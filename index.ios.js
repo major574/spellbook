@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Firebase from 'firebase';
 
 import {
     Text,
@@ -22,13 +23,21 @@ var Slot = React.createClass({
         )
     }
 });
-var Stone = React.createClass({
+var Stones = React.createClass({
+    // getInitialState: function() {
+    //     return {
+    //         color: 'red'
+    //     }
+    //
+    // },
     render: function() {
         const style = this.props.stoneState ? styles.stoneOn : styles.stoneOff;
         return (
-            <TouchableHighlight underlayColor="green" onPress={ ()=> this.props.handleStone(this.props.slotIndex) } style={ style }>
-                <Text> { this.props.stoneState ? 'On' : 'Off'} </Text>
-            </TouchableHighlight>
+            <View>
+                <TouchableHighlight underlayColor="green" onPress={ ()=> this.props.handleStone(this.props.slotIndex) } style={ style }>
+                    <Text> { this.props.stoneState ? 'On' : 'Off'} </Text>
+                </TouchableHighlight>
+            </View>
         )
     }
 })
@@ -45,7 +54,7 @@ var SpellBook = React.createClass({
 
     render: function() {
         const stoneRow = this.state.stones.slice(0, 4).map( (stone, i ) =>{
-            return <Stone slotIndex={i} stoneState={ stone } key={i} handleStone={ this.handleStone } />
+            return <Stones slotIndex={i} stoneState={ stone } key={i} handleStone={ this.handleStone } />
         } )
 
         const slotRow1 = this.state.slots.slice(0, 4).map( ( slot, i ) => {
@@ -91,7 +100,6 @@ var SpellBook = React.createClass({
                 <View style={styles.healthBar}>
                     <Text style={styles.footText}>Health</Text>
                 </View>
-                <View style={styles.footer}>
                     <View style={styles.footer}>
                         <TouchableHighlight underlayColor="gray" onPress={ this.commitClear } style={ styles.button }>
                             <Text>Clear</Text>
@@ -100,9 +108,6 @@ var SpellBook = React.createClass({
                             <Text>Cast</Text>
                         </TouchableHighlight>
                     </View>
-                </View>
-                <View style={styles.headHalf}>
-                </View>
             </View>
         )
     },
@@ -129,6 +134,7 @@ var SpellBook = React.createClass({
     commitClear: function(){
         this.slotClear();
         this.stoneClear();
+        this.setState({spell:""});
     },
 
     stoneClear: function(){
@@ -181,6 +187,7 @@ var SpellBook = React.createClass({
 var styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: 'gray',
         alignItems: 'stretch'
     },
     headHalf: {
@@ -260,7 +267,7 @@ var styles = StyleSheet.create({
     },
     buttonOff: {
         backgroundColor: '#E8C46F',
-        borderWidth: 1,
+        borderWidth: 2,
         height: 50,
         width: 50,
         flexWrap: 'wrap',
@@ -270,7 +277,7 @@ var styles = StyleSheet.create({
     },
     buttonOn: {
         backgroundColor: '#FF3347',
-        borderWidth: 1,
+        borderWidth: 2,
         height: 50,
         width: 50,
         flexWrap: 'wrap',

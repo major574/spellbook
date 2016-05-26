@@ -7,6 +7,7 @@ import {
     TouchableHighlight,
     AppRegistry,
     StyleSheet,
+    Image,
 } from 'react-native';
 
 //To do: Make each activated stone a different color, and to deactivate a stone if another one is clicked.
@@ -23,12 +24,12 @@ var Slot = React.createClass({
             flexWrap: 'wrap',
             justifyContent: 'center',
             alignItems: 'center',
-            borderColor: 'black'
+            borderColor: '#331900'
         }
 
         return (
-            <TouchableHighlight underlayColor="gray" onPress={ () => {this.props.handleActivation(this.props.slotIndex)} }  style={ style }>
-                <Text> { this.props.slotState ? 'On' : 'Off'} </Text>
+            <TouchableHighlight underlayColor="#E8C46F" onPress={ () => {this.props.handleActivation(this.props.slotIndex)} }  style={ style }>
+                <Image source={require('./assets/hex.png')} />
             </TouchableHighlight>
         )
     }
@@ -37,7 +38,7 @@ var Slot = React.createClass({
 var Stones = React.createClass({
     getInitialState: function() {
         return {
-            color: 'red'
+            color: '#FF2605'
         }
     },
 
@@ -55,7 +56,9 @@ var Stones = React.createClass({
             flexWrap: 'wrap',
             justifyContent: 'space-around',
             alignItems: 'center',
-            borderColor: '#5C5B5A'
+            borderColor: 'black',
+            borderRadius: 4,
+            marginLeft: 4,
         };
 
         const offStyle = styles.stoneOff;
@@ -63,27 +66,27 @@ var Stones = React.createClass({
         return (
             <View style={ styles.slot } >
                 <TouchableHighlight
-                    underlayColor="gray"
-                    onPress={ ()=> { this.handleUpdate('red'); }}
-                    style={ this.state.color === 'red' ? onStyle : offStyle }>
+                    underlayColor="red"
+                    onPress={ ()=> { this.handleUpdate('#FF2605'); }}
+                    style={ this.state.color === '#FF2605' ? onStyle : offStyle }>
                     <Text> Fire </Text>
                 </TouchableHighlight>
                 <TouchableHighlight
-                    underlayColor="gray"
-                    onPress={ ()=> { this.handleUpdate('blue'); }}
-                    style={ this.state.color === 'blue' ? onStyle : offStyle }>
+                    underlayColor="blue"
+                    onPress={ ()=> { this.handleUpdate('#12C8FF'); }}
+                    style={ this.state.color === '#12C8FF' ? onStyle : offStyle }>
                     <Text> Ice </Text>
                 </TouchableHighlight>
                 <TouchableHighlight
-                    underlayColor="gray"
-                    onPress={ ()=> { this.handleUpdate('yellow'); }}
-                    style={ this.state.color === 'yellow' ? onStyle : offStyle }>
+                    underlayColor="yellow"
+                    onPress={ ()=> { this.handleUpdate('#F3F315'); }}
+                    style={ this.state.color === '#F3F315' ? onStyle : offStyle }>
                     <Text> Light </Text>
                 </TouchableHighlight>
                 <TouchableHighlight
-                    underlayColor="gray"
-                    onPress={ ()=> { this.handleUpdate('green'); }}
-                    style={ this.state.color === 'green' ? onStyle : offStyle }>
+                    underlayColor="green"
+                    onPress={ ()=> { this.handleUpdate('#03FF07'); }}
+                    style={ this.state.color === '#03FF07' ? onStyle : offStyle }>
                     <Text> Acid </Text>
                 </TouchableHighlight>
             </View>
@@ -96,8 +99,8 @@ var SpellBook = React.createClass({
     getInitialState(){
         return {
             slots: Array(12).fill(false),
-            spell: "",
-            stones: 'red'
+            spell: "Ready",
+            stones: '#FF2605'
         }
     },
 
@@ -125,15 +128,14 @@ var SpellBook = React.createClass({
                 </View>
                 <View style={styles.header}>
                     <Text style={styles.headText}>
-                        Spell Book
-                    </Text>
-                </View>
-                <View style={styles.body}>
-                    <Text style={styles.bodyText}>
                         {this.state.spell}
                     </Text>
                 </View>
-                <View style={styles.slot}>
+                <View style={styles.body}>
+                    <Image source={require('./assets/aCave.png')} />
+
+                </View>
+                <View style={styles.stoneSlot}>
                     <Stones handleChange={ this.handleStoneChange }/>
                 </View>
                 <View style={styles.slot}>
@@ -204,10 +206,10 @@ var SpellBook = React.createClass({
         };
 
         this.state.slots.forEach( ( n ) => {
-            if(n === 'red') spellString += '1';
-            else if(n === 'blue') spellString += '2';
-            else if(n === 'yellow') spellString += '3';
-            else if(n === 'green') spellString += '4';
+            if(n === '#FF2605') spellString += '1';
+            else if(n === '#12C8FF') spellString += '2';
+            else if(n === '#F3F315') spellString += '3';
+            else if(n === '#03FF07') spellString += '4';
             else spellString += '0';
         });
 
@@ -226,11 +228,12 @@ var SpellBook = React.createClass({
 var styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'gray',
+        // backgroundColor: 'gray',
         alignItems: 'stretch'
     },
     headHalf: {
         flex: 1,
+        backgroundColor: '#4A434F'
     },
     header: {
         flex: 2,
@@ -239,7 +242,7 @@ var styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
         borderWidth: 2,
-        backgroundColor: '#E8C46F',
+        backgroundColor: 'white',
         // borderColor: 'orange'
 
     },
@@ -249,8 +252,9 @@ var styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'space-around',
         alignItems: 'center',
+        backgroundColor: '#4A434F'
         // borderWidth: 2,
-        // borderColor: 'blue'
+        // borderColor: '#12C8FF'
     },
     healthBar: {
         flex: 1,
@@ -279,22 +283,34 @@ var styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: 'gray',
+        // backgroundColor: 'gray',
+        // marginTop: 0,
+        // marginLeft: 2,
         // borderWidth: 1,
         // borderColor: 'black'
-
+    },
+    stoneSlot: {
+        flex: 2,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        // backgroundColor: 'gray',
+        marginLeft: 8,
+        marginBottom: 5
     },
     body: {
         flex: 13,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'gray',
+        alignItems: 'stretch'
+        // backgroundColor: 'black',
         // borderWidth: 2,
-        // borderColor: 'yellow'
+        // borderColor: '#F3F315'
     },
     button: {
-        backgroundColor: '#E8C46F',
+        backgroundColor: '#665D6E',
         flexDirection: 'row',
         borderWidth: 2,
         height: 40,
@@ -322,7 +338,10 @@ var styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'space-around',
         alignItems: 'center',
-        borderColor: 'black'
+        borderColor: 'black',
+        marginLeft: 4,
+        // marginRight: 5,
+        borderRadius: 4
     }
 })
 

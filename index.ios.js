@@ -17,15 +17,15 @@ var Slot = React.createClass({
     render: function() {
         let style = {
             backgroundColor: !!this.props.slotState ? this.props.slotState : '#E8C46F',
-            borderWidth: 2,
+            borderWidth: 3,
             height: 50,
             width: 50,
             flexWrap: 'wrap',
             justifyContent: 'center',
             alignItems: 'center',
-            borderColor: '#A11624'
+            borderColor: 'black'
         }
-        
+
         return (
             <TouchableHighlight underlayColor="gray" onPress={ () => {this.props.handleActivation(this.props.slotIndex)} }  style={ style }>
                 <Text> { this.props.slotState ? 'On' : 'Off'} </Text>
@@ -66,25 +66,25 @@ var Stones = React.createClass({
                     underlayColor="gray"
                     onPress={ ()=> { this.handleUpdate('red'); }}
                     style={ this.state.color === 'red' ? onStyle : offStyle }>
-                    <Text> { this.props.stoneState ? 'On' : 'Off'} </Text>
+                    <Text> Fire </Text>
                 </TouchableHighlight>
                 <TouchableHighlight
                     underlayColor="gray"
                     onPress={ ()=> { this.handleUpdate('blue'); }}
                     style={ this.state.color === 'blue' ? onStyle : offStyle }>
-                    <Text> { this.props.stoneState ? 'On' : 'Off'} </Text>
+                    <Text> Ice </Text>
                 </TouchableHighlight>
                 <TouchableHighlight
                     underlayColor="gray"
                     onPress={ ()=> { this.handleUpdate('yellow'); }}
                     style={ this.state.color === 'yellow' ? onStyle : offStyle }>
-                    <Text> { this.props.stoneState ? 'On' : 'Off'} </Text>
+                    <Text> Light </Text>
                 </TouchableHighlight>
                 <TouchableHighlight
                     underlayColor="gray"
                     onPress={ ()=> { this.handleUpdate('green'); }}
                     style={ this.state.color === 'green' ? onStyle : offStyle }>
-                    <Text> { this.props.stoneState ? 'On' : 'Off'} </Text>
+                    <Text> Acid </Text>
                 </TouchableHighlight>
             </View>
         )
@@ -162,7 +162,7 @@ var SpellBook = React.createClass({
 
     handleActivation(slot){
         let newslots = this.state.slots.slice(0, this.state.slots.length );
-        
+
         newslots[slot] = !!this.state.slots[slot] ? false : this.state.stones;
 
         this.setState({ slots: newslots });
@@ -192,15 +192,15 @@ var SpellBook = React.createClass({
             '020200200202': 'Ice Storm I',
             '222002002220': 'Ice Storm II',
             '022200200222': 'Ice Storm II',
-            '100001001000': 'Lightning Bolt I',
-            '010000100100': 'Lightning Bolt I',
-            '001000010010': 'Lightning Bolt I',
-            '100001001110': 'Lightning Bolt II',
-            '010000100111': 'Lightning Bolt II',
-            '100001100100': 'Acid Burn I',
-            '010000110010': 'Acid Burn I',
-            '110011100100': 'Acid Burn II',
-            '011001110010': 'Acid Burn II',
+            '300003003000': 'Lightning Bolt I',
+            '030000300300': 'Lightning Bolt I',
+            '003000030030': 'Lightning Bolt I',
+            '300003003330': 'Lightning Bolt II',
+            '030000300333': 'Lightning Bolt II',
+            '400004400400': 'Acid Burn I',
+            '040000440040': 'Acid Burn I',
+            '440044400400': 'Acid Burn II',
+            '044004440040': 'Acid Burn II',
         };
 
         this.state.slots.forEach( ( n ) => {
@@ -212,7 +212,7 @@ var SpellBook = React.createClass({
         });
 
         //bang bang you're a boolean
-        spellString = !!spellChart[spellString] ? spellChart[spellString] : 'fizzle...'
+        spellString = !!spellChart[spellString] ? spellChart[spellString] : 'Spell fizzled..'
 
         this.setState({
             spell: spellString,
@@ -285,7 +285,7 @@ var styles = StyleSheet.create({
 
     },
     body: {
-        flex: 12,
+        flex: 13,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',

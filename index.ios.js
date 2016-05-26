@@ -15,7 +15,17 @@ import {
 
 var Slot = React.createClass({
     render: function() {
-        const style = this.props.slotState ? styles.buttonOn : styles.buttonOff;
+        let style = {
+            backgroundColor: !!this.props.slotState ? this.props.slotState : '#E8C46F',
+            borderWidth: 2,
+            height: 50,
+            width: 50,
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderColor: '#A11624'
+        }
+        
         return (
             <TouchableHighlight underlayColor="gray" onPress={ () => {this.props.handleActivation(this.props.slotIndex)} }  style={ style }>
                 <Text> { this.props.slotState ? 'On' : 'Off'} </Text>
@@ -23,18 +33,57 @@ var Slot = React.createClass({
         )
     }
 });
+
 var Stones = React.createClass({
-    // getInitialState: function() {
-    //     return {
-    //         color: 'red'
-    //     }
-    //
-    // },
+    getInitialState: function() {
+        return {
+            color: 'red'
+        }
+    },
+
+    handleUpdate(color) {
+        this.props.handleChange(color);
+        this.setState({ color: color });
+    },
+
     render: function() {
-        const style = this.props.stoneState ? styles.stoneOn : styles.stoneOff;
+        let onStyle = {
+            backgroundColor: this.state.color,
+            borderWidth: 1,
+            height: 40,
+            width: 40,
+            flexWrap: 'wrap',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            borderColor: '#5C5B5A'
+        };
+
+        const offStyle = styles.stoneOff;
+
         return (
-            <View>
-                <TouchableHighlight underlayColor="green" onPress={ ()=> this.props.handleStone(this.props.slotIndex) } style={ style }>
+            <View style={ styles.slot } >
+                <TouchableHighlight
+                    underlayColor="gray"
+                    onPress={ ()=> { this.handleUpdate('red'); }}
+                    style={ this.state.color === 'red' ? onStyle : offStyle }>
+                    <Text> { this.props.stoneState ? 'On' : 'Off'} </Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                    underlayColor="gray"
+                    onPress={ ()=> { this.handleUpdate('blue'); }}
+                    style={ this.state.color === 'blue' ? onStyle : offStyle }>
+                    <Text> { this.props.stoneState ? 'On' : 'Off'} </Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                    underlayColor="gray"
+                    onPress={ ()=> { this.handleUpdate('yellow'); }}
+                    style={ this.state.color === 'yellow' ? onStyle : offStyle }>
+                    <Text> { this.props.stoneState ? 'On' : 'Off'} </Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                    underlayColor="gray"
+                    onPress={ ()=> { this.handleUpdate('green'); }}
+                    style={ this.state.color === 'green' ? onStyle : offStyle }>
                     <Text> { this.props.stoneState ? 'On' : 'Off'} </Text>
                 </TouchableHighlight>
             </View>
@@ -44,18 +93,19 @@ var Stones = React.createClass({
 
 var SpellBook = React.createClass({
 
-    getInitialState: function(){
+    getInitialState(){
         return {
             slots: Array(12).fill(false),
             spell: "",
-            stones: Array(4).fill(false)
+            stones: 'red'
         }
     },
 
-    render: function() {
-        const stoneRow = this.state.stones.slice(0, 4).map( (stone, i ) =>{
-            return <Stones slotIndex={i} stoneState={ stone } key={i} handleStone={ this.handleStone } />
-        } )
+    handleStoneChange(color) {
+        this.setState({ stones: color });
+    },
+
+    render() {
 
         const slotRow1 = this.state.slots.slice(0, 4).map( ( slot, i ) => {
             return <Slot slotIndex={i} slotState={ slot } key={i} handleActivation={ this.handleActivation } />
@@ -84,9 +134,7 @@ var SpellBook = React.createClass({
                     </Text>
                 </View>
                 <View style={styles.slot}>
-                    <View style={styles.slot}>
-                        {stoneRow}
-                    </View>
+                    <Stones handleChange={ this.handleStoneChange }/>
                 </View>
                 <View style={styles.slot}>
                     <View style={styles.slot}>{ slotRow1 }</View>
@@ -112,41 +160,26 @@ var SpellBook = React.createClass({
         )
     },
 
-    handleActivation: function(slot){
+    handleActivation(slot){
         let newslots = this.state.slots.slice(0, this.state.slots.length );
-        newslots[slot] = !this.state.slots[slot];
+        
+        newslots[slot] = !!this.state.slots[slot] ? false : this.state.stones;
 
         this.setState({ slots: newslots });
     },
 
-    handleStone: function(stone){
-        let newstones = this.state.stones.slice(0, this.state.stones.length );
-
-        newstones[stone] = !this.state.stones[stone];
-
-        this.setState({ stones: newstones });
+    commitClear(){
+        this.setState({
+            spell: "",
+            slots: Array(12).fill(false)
+        });
     },
 
-    slotClear: function(){
-        this.setState({ slots: Array(12).fill(false) });
-    },
-
-    commitClear: function(){
-        this.slotClear();
-        this.stoneClear();
-        this.setState({spell:""});
-    },
-
-    stoneClear: function(){
-        this.setState({ stones: Array(4).fill(false) });
-    },
-
-    commitCast: function(){
+    commitCast(){
         //pushes each cells # to a string..
         let spellString = "";
         // i 0-1 = heal, 2-3 = fireball
         const spellChart = {
-
             '010010100100': 'Heal I',
             '001001010010': 'Heal I',
             '010011100100': 'Heal II',
@@ -155,10 +188,10 @@ var SpellBook = React.createClass({
             '000100100100': 'Fireball I',
             '011001101000': 'Fireball II',
             '001100110100': 'Fireball II',
-            '101001001010': 'Ice Storm I',
-            '010100100101': 'Ice Storm I',
-            '111001001110': 'Ice Storm II',
-            '011100100111': 'Ice Storm II',
+            '202002002020': 'Ice Storm I',
+            '020200200202': 'Ice Storm I',
+            '222002002220': 'Ice Storm II',
+            '022200200222': 'Ice Storm II',
             '100001001000': 'Lightning Bolt I',
             '010000100100': 'Lightning Bolt I',
             '001000010010': 'Lightning Bolt I',
@@ -168,17 +201,23 @@ var SpellBook = React.createClass({
             '010000110010': 'Acid Burn I',
             '110011100100': 'Acid Burn II',
             '011001110010': 'Acid Burn II',
-
-
         };
-        this.state.slots.forEach( ( n ) => {
-            spellString += n ? '1' : '0';
-        });
-        //bang bang you're a boolean
-        spellString = !!spellChart[spellString] ? spellChart[spellString] : spellString
 
-        this.setState({spell: spellString})
-        this.slotClear()
+        this.state.slots.forEach( ( n ) => {
+            if(n === 'red') spellString += '1';
+            else if(n === 'blue') spellString += '2';
+            else if(n === 'yellow') spellString += '3';
+            else if(n === 'green') spellString += '4';
+            else spellString += '0';
+        });
+
+        //bang bang you're a boolean
+        spellString = !!spellChart[spellString] ? spellChart[spellString] : 'fizzle...'
+
+        this.setState({
+            spell: spellString,
+            slots: Array(12).fill(false)
+        });
     }
 });
 
@@ -275,16 +314,6 @@ var styles = StyleSheet.create({
         alignItems: 'center',
         borderColor: '#A88940'
     },
-    buttonOn: {
-        backgroundColor: '#FF3347',
-        borderWidth: 2,
-        height: 50,
-        width: 50,
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderColor: '#A11624'
-    },
     stoneOff: {
         backgroundColor: '#5C5B5A',
         borderWidth: 1,
@@ -294,17 +323,6 @@ var styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
         borderColor: 'black'
-    },
-    stoneOn: {
-        backgroundColor: 'white',
-        borderWidth: 1,
-        height: 40,
-        width: 40,
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        borderColor: '#5C5B5A'
-
     }
 })
 

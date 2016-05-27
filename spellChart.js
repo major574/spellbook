@@ -1,0 +1,25 @@
+const spellChart = {
+      '010010100100': 'Heal I',
+      '001001010010': 'Heal I',
+      '010011100100': 'Heal II',
+      '001001110010': 'Heal II',
+      '001001001000': 'Fireball I',
+      '000100100100': 'Fireball I',
+      '011001101000': 'Fireball II',
+      '001100110100': 'Fireball II',
+      '202002002020': 'Ice Storm I',
+      '020200200202': 'Ice Storm I',
+      '222002002220': 'Ice Storm II',
+      '022200200222': 'Ice Storm II',
+      '300003003000': 'Lightning Bolt I',
+      '030000300300': 'Lightning Bolt I',
+      '003000030030': 'Lightning Bolt I',
+      '300003003330': 'Lightning Bolt II',
+      '030000300333': 'Lightning Bolt II',
+      '400004400400': 'Acid Burn I',
+      '040000440040': 'Acid Burn I',
+      '440044400400': 'Acid Burn II',
+      '044004440040': 'Acid Burn II',
+};
+
+export default spellChart;

@@ -13,6 +13,8 @@ import {
 import styles from './styles';
 import spellChart from './spellChart';
 
+import caveBackground from './assets/aCave.png';
+
 const Slot = React.createClass({
     render: function() {
         let style = {
@@ -46,46 +48,33 @@ const Stones = React.createClass({
         this.setState({ color: color });
     },
 
-    render: function() {
-        let onStyle = {
-            backgroundColor: this.state.color,
-            borderWidth: 1,
-            height: 40,
-            width: 40,
-            flexWrap: 'wrap',
-            justifyContent: 'space-around',
-            alignItems: 'center',
-            borderColor: 'black',
-            borderRadius: 4,
-            marginLeft: 4,
-        };
-
+    render() {
         const offStyle = styles.stoneOff;
 
         return (
-            <View style={ styles.slot } >
+            <View style={ styles.stoneOuter } >
                 <TouchableHighlight
                     underlayColor="red"
                     onPress={ ()=> { this.handleUpdate('#FF2605'); }}
-                    style={ this.state.color === '#FF2605' ? onStyle : offStyle }>
+                    style={ this.state.color === '#FF2605' ? [ offStyle, { backgroundColor: this.state.color }] : offStyle }>
                     <Text> Fire </Text>
                 </TouchableHighlight>
                 <TouchableHighlight
                     underlayColor="blue"
                     onPress={ ()=> { this.handleUpdate('#12C8FF'); }}
-                    style={ this.state.color === '#12C8FF' ? onStyle : offStyle }>
+                    style={ this.state.color === '#12C8FF' ? [ offStyle, { backgroundColor: this.state.color }] : offStyle }>
                     <Text> Ice </Text>
                 </TouchableHighlight>
                 <TouchableHighlight
                     underlayColor="yellow"
                     onPress={ ()=> { this.handleUpdate('#F3F315'); }}
-                    style={ this.state.color === '#F3F315' ? onStyle : offStyle }>
+                    style={ this.state.color === '#F3F315' ? [ offStyle, { backgroundColor: this.state.color }] : offStyle }>
                     <Text> Light </Text>
                 </TouchableHighlight>
                 <TouchableHighlight
                     underlayColor="green"
                     onPress={ ()=> { this.handleUpdate('#03FF07'); }}
-                    style={ this.state.color === '#03FF07' ? onStyle : offStyle }>
+                    style={ this.state.color === '#03FF07' ? [ offStyle, { backgroundColor: this.state.color }] : offStyle }>
                     <Text> Acid </Text>
                 </TouchableHighlight>
             </View>
@@ -109,54 +98,41 @@ const SpellBook = React.createClass({
 
     render() {
 
-        const slotRow1 = this.state.slots.slice(0, 4).map( ( slot, i ) => {
+        const slotRows = this.state.slots.slice(0, 12).map( ( slot, i ) => {
             return <Slot slotIndex={i} slotState={ slot } key={i} handleActivation={ this.handleActivation } />
-        });
-
-        const slotRow2 = this.state.slots.slice(4, 8).map( ( slot, i ) => {
-            return <Slot slotIndex={i + 4} slotState={ slot } key={i} handleActivation={ this.handleActivation } />
-        });
-
-        const slotRow3 = this.state.slots.slice(8, 12).map( ( slot, i ) => {
-            return <Slot slotIndex={i + 8} slotState={ slot } key={i} handleActivation={ this.handleActivation } />
         });
 
         return (
             <View style={styles.container}>
-                <View style={styles.headHalf}>
-                </View>
-                <View style={styles.header}>
-                    <Text style={styles.headText}>
-                        {this.state.spell}
-                    </Text>
-                </View>
-                <View style={styles.body}>
-                    <Image source={require('./assets/aCave.png')} />
 
+                <View style={styles.header}>
+                    <Text style={{ fontSize: 30 }}>{ this.state.spell }</Text>
                 </View>
-                <View style={styles.stoneSlot}>
-                    <Stones handleChange={ this.handleStoneChange }/>
-                </View>
-                <View style={styles.slot}>
-                    <View style={styles.slot}>{ slotRow1 }</View>
-                </View>
-                <View style={styles.slot}>
-                    <View style={styles.slot}>{ slotRow2 }</View>
-                </View>
-                <View style={styles.slot}>
-                    <View style={styles.slot}>{ slotRow3 }</View>
-                </View>
-                <View style={styles.healthBar}>
-                    <Text style={styles.footText}>Health</Text>
-                </View>
-                    <View style={styles.footer}>
-                        <TouchableHighlight underlayColor="gray" onPress={ this.commitClear } style={ styles.button }>
-                            <Text>Clear</Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight underlayColor="gray" onPress={ this.commitCast } style={ styles.button }>
-                            <Text>Cast</Text>
-                        </TouchableHighlight>
+
+                <Image source={ caveBackground } style={styles.imageBackground}>
+                    <View style={styles.battleText}/>
+                    <View style={styles.uiBottom}>
+                        <View style={styles.allSlots}>
+                            <Stones handleChange={ this.handleStoneChange }/>
+                            <View style={styles.slotOuter}>{ slotRows }</View>
+                        </View>
+                        <View style={styles.spellView}>
+                        </View>
                     </View>
+                </Image>
+
+                <View style={styles.healthBar}>
+                    <Text style={{ color: 'white'}}>Health</Text>
+                </View>
+
+                <View style={styles.footer}>
+                    <TouchableHighlight underlayColor="gray" onPress={ this.commitClear } style={ styles.button }>
+                        <Text>Clear</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight underlayColor="gray" onPress={ this.commitCast } style={ styles.button }>
+                        <Text>Cast</Text>
+                    </TouchableHighlight>
+                </View>
             </View>
         )
     },

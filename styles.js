@@ -3,74 +3,90 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'stretch'
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        justifyContent: 'center',
     },
-    headHalf: {
-        flex: 1,
-        backgroundColor: '#4A434F'
-    },
+
     header: {
-        flex: 2,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
+        height: 50,
         alignItems: 'center',
         borderWidth: 2,
-        backgroundColor: 'white',
+        backgroundColor: 'white'
     },
+
     footer: {
-        flex: 2,
+        height: 60,
         flexDirection: 'row',
-        flexWrap: 'wrap',
         justifyContent: 'space-around',
         alignItems: 'center',
         backgroundColor: '#4A434F'
     },
+
     healthBar: {
-        flex: 1,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
+        height: 40,
+        justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 2,
         borderColor: '#A11624',
-        backgroundColor: '#FF3347'
+        backgroundColor: '#FF3347',
+        color: 'white',
+        fontSize: 15
     },
-    headText: {
-        fontSize: 30
+
+    battleText: {
+        flex: 2
     },
-    footText: {
-        fontSize: 15,
-        color: 'white'
+
+    uiBottom: {
+        flex: 1,
+        flexDirection: 'row',
+        marginBottom: 5
     },
-    bodyText: {
-        fontSize: 40,
-        color: 'white'
+
+    allSlots: {
+        flex: 1,
+        alignSelf: 'flex-start'
     },
-    slot: {
-        flex: 2,
+
+    spellView: {
+        flex: 1,
+        backgroundColor: 'white',
+        opacity: 0.5
+    },
+
+    stoneOuter: {
+        flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
         alignItems: 'center',
-    },
-    stoneSlot: {
-        flex: 2,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        // backgroundColor: 'gray',
         marginLeft: 8,
         marginBottom: 5
     },
-    body: {
-        flex: 13,
+
+    slotOuter: {
+        flex: 1,
         flexDirection: 'row',
-        justifyContent: 'center',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
         alignItems: 'center',
-        alignItems: 'stretch'
     },
+
+    imageBackground: {
+        flex: 1,
+        alignSelf: 'stretch',
+        width: null,
+    },
+
+    body: {
+        // flex: 1,
+        // flexDirection: 'row',
+        // justifyContent: 'center',
+        // alignItems: 'stretch',
+        alignSelf: 'stretch'
+    },
+
     button: {
         backgroundColor: '#665D6E',
         flexDirection: 'row',
@@ -82,6 +98,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderColor: 'black'
     },
+
     buttonOff: {
         backgroundColor: '#E8C46F',
         borderWidth: 2,
@@ -92,8 +109,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderColor: '#A88940'
     },
+
     stoneOff: {
-        backgroundColor: '#5C5B5A',
+        backgroundColor: '#777777',
         borderWidth: 1,
         height: 40,
         width: 40,

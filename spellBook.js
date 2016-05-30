@@ -18,10 +18,11 @@ import caveBackground from './assets/aCave.png';
 const Slot = React.createClass({
     render: function() {
         let style = {
-            backgroundColor: !!this.props.slotState ? this.props.slotState : '#E8C46F',
-            borderWidth: 3,
+            backgroundColor: !!this.props.slotState ? this.props.slotState : '#4A434F',
+            borderWidth: 2,
             height: 50,
             width: 50,
+            borderRadius: 8,
             flexWrap: 'wrap',
             justifyContent: 'center',
             alignItems: 'center',
@@ -30,7 +31,7 @@ const Slot = React.createClass({
 
         return (
             <TouchableHighlight underlayColor="#E8C46F" onPress={ () => {this.props.handleActivation(this.props.slotIndex)} }  style={ style }>
-                <Image source={require('./assets/hex.png')} />
+                <Image source={require('./assets/uislot.png')} />
             </TouchableHighlight>
         )
     }
@@ -104,35 +105,33 @@ const SpellBook = React.createClass({
 
         return (
             <View style={styles.container}>
-
-                <View style={styles.header}>
-                    <Text style={{ fontSize: 30 }}>{ this.state.spell }</Text>
-                </View>
-
                 <Image source={ caveBackground } style={styles.imageBackground}>
-                    <View style={styles.battleText}/>
-                    <View style={styles.uiBottom}>
-                        <View style={styles.allSlots}>
-                            <Stones handleChange={ this.handleStoneChange }/>
-                            <View style={styles.slotOuter}>{ slotRows }</View>
-                        </View>
-                        <View style={styles.spellView}>
+                    <View style={styles.topBar}></View>
+                    <View style={styles.header}>
+                        <Text style={{ fontSize: 20 }}>{ this.state.spell }</Text>
+                    </View>
+                    <View style={styles.body}>
+                        <View style={styles.battleText}></View>
+                        <View style={styles.uiBottom}>
+                            <View style={styles.allSlots}>
+                                <Stones handleChange={ this.handleStoneChange }/>
+                                <View style={styles.slotOuter}>{ slotRows }</View>
+                            </View>
+                            <View style={styles.spellView}></View>
                         </View>
                     </View>
+                    <View style={styles.healthBar}>
+                        <Text style={{ color: 'white'}}>Health</Text>
+                    </View>
+                    <View style={styles.footer}>
+                        <TouchableHighlight underlayColor="gray" onPress={ this.commitClear } style={ styles.button }>
+                            <Text>Clear</Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight underlayColor="gray" onPress={ this.commitCast } style={ styles.button }>
+                            <Text>Cast</Text>
+                        </TouchableHighlight>
+                    </View>
                 </Image>
-
-                <View style={styles.healthBar}>
-                    <Text style={{ color: 'white'}}>Health</Text>
-                </View>
-
-                <View style={styles.footer}>
-                    <TouchableHighlight underlayColor="gray" onPress={ this.commitClear } style={ styles.button }>
-                        <Text>Clear</Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight underlayColor="gray" onPress={ this.commitCast } style={ styles.button }>
-                        <Text>Cast</Text>
-                    </TouchableHighlight>
-                </View>
             </View>
         )
     },

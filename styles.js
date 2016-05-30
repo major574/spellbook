@@ -7,16 +7,23 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
         justifyContent: 'center',
     },
+    topBar: {
+        flex: 1,
+        backgroundColor: '#4A434F'
+    },
 
     header: {
-        height: 50,
+        // height: 50,
+        flex: 1,
         alignItems: 'center',
+        justifyContent: 'center',
         borderWidth: 2,
         backgroundColor: 'white'
     },
 
     footer: {
-        height: 60,
+        flex: 2,
+        // height: 60,
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
@@ -24,35 +31,49 @@ const styles = StyleSheet.create({
     },
 
     healthBar: {
-        height: 40,
+        flex: 1,
+        // height: 40,
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 2,
         borderColor: '#A11624',
         backgroundColor: '#FF3347',
-        color: 'white',
-        fontSize: 15
+        // color: 'white',
+        // fontSize: 15
     },
 
     battleText: {
-        flex: 2
+        flex: 1,
+        // height: 200,
+        // borderColor: 'purple',
+        // borderWidth: 2
     },
 
     uiBottom: {
-        flex: 1,
+        // flex: 2,
+        height: 220,
         flexDirection: 'row',
-        marginBottom: 5
+        // marginBottom: 5
+        // alignSelf: 'flex-end',
+        // borderColor: 'green',
+        // borderWidth: 2,
+        alignSelf: 'stretch',
     },
 
     allSlots: {
-        flex: 1,
-        alignSelf: 'flex-start'
+        flex: 2,
+        alignSelf: 'flex-start',
+        // borderColor: 'red',
+        // borderWidth: 1,
     },
 
     spellView: {
         flex: 1,
-        backgroundColor: 'white',
-        opacity: 0.5
+        // backgroundColor: 'white',
+        // opacity: 0.5,
+        // borderColor: 'black',
+        // borderWidth: 2
+
     },
 
     stoneOuter: {
@@ -62,29 +83,40 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         marginLeft: 8,
-        marginBottom: 5
+        marginBottom: 5,
+        // borderColor: 'gray',
+        // borderWidth: 1,
+
     },
 
     slotOuter: {
         flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
+        width: 210,
         justifyContent: 'flex-start',
         alignItems: 'center',
+        // borderColor: 'blue',
+        // borderWidth: 2
     },
 
     imageBackground: {
         flex: 1,
         alignSelf: 'stretch',
         width: null,
+        // borderColor: 'yellow',
+        // borderWidth: 2
+
     },
 
     body: {
-        // flex: 1,
-        // flexDirection: 'row',
-        // justifyContent: 'center',
-        // alignItems: 'stretch',
-        alignSelf: 'stretch'
+        flex: 16,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'stretch',
+        alignSelf: 'stretch',
+        // borderColor: 'yellow',
+        // borderWidth: 2
     },
 
     button: {
@@ -111,7 +143,7 @@ const styles = StyleSheet.create({
     },
 
     stoneOff: {
-        backgroundColor: '#777777',
+        backgroundColor: '#4A434F',
         borderWidth: 1,
         height: 40,
         width: 40,
